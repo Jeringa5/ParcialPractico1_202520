@@ -15,8 +15,8 @@ import co.edu.uniandes.dse.ParcialPractico1_202520.entities.SistemaSolar;
 import co.edu.uniandes.dse.ParcialPractico1_202520.repositories.SistemaSolarRepository;
 
 @DataJpaTest
-@Import(SistemaSolarService.class)
-public class SistemaSolarServiceTest {
+@Import(SistemaSolarService.class) // Importa el servicio real
+class SistemaSolarServiceTest {
 
     @Autowired
     private SistemaSolarService sistemaSolarService;
@@ -25,42 +25,45 @@ public class SistemaSolarServiceTest {
     private SistemaSolarRepository sistemaSolarRepository;
 
     private SistemaSolar buildValido() {
-        SistemaSolar sistema = new SistemaSolar();
-        sistema.setNombre("Andromeda-12");
-        sistema.setRegion(region.CORE);
-        sistema.setRatio(0.25);          // dentro de [0.2, 0.6]
-        sistema.setStormtroopers(5000);  // > 1000
-        return sistema;
+        SistemaSolar s = new SistemaSolar();
+        s.setNombre("Andromeda-12");
+        s.setRegion(Region.MID_RIM);
+        s.setRatio(0.25);
+        s.setStormtroopers(5001);
+        return s;
     }
 
     @Test
+    @DisplayName("Crear SistemaSolar - éxito")
     void crearSistemaSolar_ok() {
         SistemaSolar creado = sistemaSolarService.create(buildValido());
 
-        assertThat(creado.getId()).isNotNull();
-        assertThat(creado.getNombre()).isEqualTo("Andromeda-12");
-        assertThat(creado.getRegion()).isEqualTo(Region.MID_RIM);
-        assertThat(creado.getRatio()).isEqualTo(0.25);
-        assertThat(creado.getStormtroopers()).isEqualTo(5000);
+        assertNotNull(creado.getId());
+        assertEquals("Andromeda-12", creado.getNombre());
+        assertEquals(Region.MID_RIM, creado.getRegion());
+        assertEquals(0.25, creado.getRatio(), 1e-9);
+        assertEquals(5001, creado.getStormtroopers());
 
-        assertThat(sistemaSolarRepository.count()).isEqualTo(1);
+        assertEquals(1, sistemaSolarRepository.count());
     }
 
     @Test
+    @DisplayName("Crear SistemaSolar - falla por nombre >= 31 chars")
     void crearSistemaSolar_fallaNombreLargo() {
         SistemaSolar s = buildValido();
-        s.setNombre("x".repeat(31)); // 31 caracteres
+        s.setNombre("x".repeat(31));
 
         assertThrows(IllegalArgumentException.class, () -> sistemaSolarService.create(s));
-        assertThat(sistemaSolarRepository.count()).isZero();
+        assertEquals(0, sistemaSolarRepository.count());
     }
 
     @Test
+    @DisplayName("Crear SistemaSolar - falla por ratio fuera de [0.2, 0.6]")
     void crearSistemaSolar_fallaRatioFueraDeRango() {
         SistemaSolar s = buildValido();
-        s.setRatio(0.10); // fuera del rango
+        s.setRatio(0.10); // fuera de rango
 
         assertThrows(IllegalArgumentException.class, () -> sistemaSolarService.create(s));
-        assertThat(sistemaSolarRepository.count()).isZero();
+        assertEquals(0, sistemaSolarRepository.count());
     }
 }

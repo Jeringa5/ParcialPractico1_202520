@@ -55,4 +55,9 @@ public class SistemaSolarService {
             throw new IllegalArgumentException("El número de Stormtroopers debe ser mayor a 1000.");
         }
     }
+
+    public SistemaSolar create(SistemaSolar valido) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'create'");
+    }
 }

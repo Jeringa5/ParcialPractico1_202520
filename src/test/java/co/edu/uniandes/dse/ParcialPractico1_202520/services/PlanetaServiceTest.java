@@ -3,7 +3,6 @@ package co.edu.uniandes.dse.ParcialPractico1_202520.services;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -47,8 +46,22 @@ public class PlanetaServiceTest {
 	}
 
     @Test
-	void testCreatePlaneta() throws IllegalOperationException {
-		PlanetaEntity newEntity = factory.manufacturePojo(PlanetaEntity.class);
-		
-	}
+    void testCreatePlaneta() throws IllegalOperationException {
+        PlanetaEntity newEntity = factory.manufacturePojo(PlanetaEntity.class);
+        newEntity.setNombre("Tatooine II");
+        newEntity.setPoblacion(2000);
+        newEntity.setDiametro(10465);
+
+        PlanetaEntity result = planetaService.create(newEntity);
+
+        assertNotNull(result);
+        assertNotNull(result.getId());
+        assertEquals("Tatooine II", result.getNombre());
+        assertEquals(2000, result.getPoblacion());
+        assertEquals(10465, result.getDiametro());
+
+        PlanetaEntity entity = entityManager.find(PlanetaEntity.class, result.getId());
+        assertEquals(result.getNombre(), entity.getNombre());
+        assertEquals(result.getPoblacion(), entity.getPoblacion());
+    }
 }

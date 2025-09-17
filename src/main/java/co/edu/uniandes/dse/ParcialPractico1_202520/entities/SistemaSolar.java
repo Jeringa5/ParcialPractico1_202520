@@ -28,7 +28,7 @@ public class SistemaSolar extends BaseEntity {
     private Region region;
 
     // Relación de número de Stormtroopers sobre la población total del sistema solar.
-    private int ratio;
+    private double ratio;
 
     private int Stormtroopers;
 

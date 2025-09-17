@@ -45,4 +45,9 @@ public class PlanetaService {
             throw new IllegalArgumentException("La poblacion debe ser mayor a 0");
         }
     }
+
+    public PlanetaEntity create(PlanetaEntity newEntity) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'create'");
+    }
 }

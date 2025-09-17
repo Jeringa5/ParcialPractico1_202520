@@ -21,7 +21,7 @@ public class SistemaSolarService {
     }
 
     @Transactional
-    public SistemaSolar create(SistemaSolar sistema) {
+    public SistemaSolar crearSistema(SistemaSolar sistema) {
         validarReglasCreacionSistema(sistema);
         return sistemaSolarRepository.save(sistema);
     }
